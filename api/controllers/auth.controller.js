@@ -59,18 +59,20 @@ export const login = async (req, res) => {
         // Generate JWT token
         const age = 24 * 60 * 60 * 7; // 7 days in seconds
         const token = jwt.sign(
-            { id: user.id, username: user.username, email: user.email },
+            { id: user.id, username: user.username, email: user.email, isAdmin: false },
             process.env.JWT_SECRET_KEY,
             { expiresIn: age }
         );
 
         //console.log('Generated Token:', token);
 
+        const {password:userPassword,...userInfo} = user;
+
         // Set token as HTTP-only cookie
         res.cookie('token', token, {
             httpOnly: true,
             maxAge: age * 1000, // Convert seconds to milliseconds
-        }).status(200).json({ message: 'Logged in successfully' });
+        }).status(200).json(userInfo);
     } catch (error) {
         console.error('Login Error:', error);
         return res.status(500).json({ message: 'Error logging in', error });
