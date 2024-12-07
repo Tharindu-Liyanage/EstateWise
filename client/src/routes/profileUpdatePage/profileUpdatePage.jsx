@@ -9,7 +9,7 @@ function ProfileUpdatePage() {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const { updateUser, currentUser } = useContext(AuthContext);
-  const [avatar, setAvatar] = useState(currentUser.avatar);
+  const [avatar, setAvatar] = useState([]);
   const [isWidgetOpen, setWidgetOpen] = useState(false);
 
   const handleSubmit = async (e) => {
@@ -25,7 +25,7 @@ function ProfileUpdatePage() {
         username,
         email,
         password,
-        avatar,
+        avatar:avatar[0],
       });
 
       updateUser(res.data);
@@ -70,13 +70,13 @@ function ProfileUpdatePage() {
       <div className="sideContainer">
         <img
           src={
-            avatar ||
-            "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png"
+            avatar[0] || currentUser.avatar || "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes-thumbnail.png"
           }
           alt=""
           className="avatar"
         />
         <UploadWidget
+
           uwConfig={{
             cloudName: "dboywel2f",
             uploadPreset: "estateWise",
@@ -84,7 +84,9 @@ function ProfileUpdatePage() {
             maxImageFileSize: 2000000,
             folder: "avatars",
           }}
-          setAvatar={setAvatar}
+
+          setState={setAvatar}
+          
         />
       </div>
     </div>
